@@ -1,0 +1,74 @@
+# Decision Declaration Linkage check.
+#
+# What this enforces: every `.ai/`-covered domain (models / pipelines / modular,
+# schedulers+guiders folded into pipelines — see check_decision_linkage.py) touched
+# by this PR's diff under src/diffusers/ must have a well-formed Decision Declaration
+# row (see decision-declaration/TEMPLATE.md) in the PR body or a PR comment, citing
+# text that is verified to exist in that domain's .ai/ file *as it exists on the
+# base branch right now* -- not a hardcoded line/anchor, so record edits and
+# renumbering can't silently invalidate a check that already passed.
+#
+# What this does NOT enforce, on purpose: whether the citation is the *right* one for
+# the changed lines, or whether the stated understanding is *correct*. That's what
+# review (and, if configured, CODEOWNERS -- see .github/CODEOWNERS) is still for.
+#
+# SECURITY: PR title/body/comments are untrusted external input. They are read via
+# `gh` CLI calls into files and read by the Python script -- never interpolated with
+# `${{ }}` into a shell `run:` string, which is a documented GitHub Actions script
+# injection vector (see REPORT.md). Permissions are read-only and scoped minimally.
+#
+# BOOTSTRAP GOTCHA: a required status check must have run at least once on the repo
+# before GitHub lets you mark it "required" in a ruleset. This workflow was committed
+# to decision-declaration-demo and run once via a PR before the ruleset requiring it
+# was created -- see the PR history on that branch.
+
+name: Decision Declaration Linkage
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, edited]
+    paths:
+      - 'src/diffusers/models/**'
+      - 'src/diffusers/pipelines/**'
+      - 'src/diffusers/modular_pipelines/**'
+      - 'src/diffusers/schedulers/**'
+      - 'src/diffusers/guiders/**'
+
+permissions:
+  contents: read
+  pull-requests: read
+  issues: read # PR comments are fetched via the issues/comments endpoint
+
+jobs:
+  decision-linkage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Compute changed files under src/diffusers/
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+        run: |
+          git diff --name-only "$BASE_SHA" "$HEAD_SHA" -- src/diffusers/ > changed_files.txt
+          cat changed_files.txt
+
+      - name: Fetch PR body and comments (untrusted content -> files, not shell args)
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          gh pr view "$PR_NUMBER" --json body -q .body > pr_body.txt
+          gh api "repos/${{ github.repository }}/issues/${PR_NUMBER}/comments" \
+            --jq '.[].body' > pr_comments.txt
+
+      - name: Run Decision Declaration Linkage check
+        run: |
+          python3 decision-declaration/check_decision_linkage.py \
+            --changed-files-file changed_files.txt \
+            --pr-text-file pr_body.txt \
+            --pr-comments-file pr_comments.txt \
+            --repo-dir . \
+            --git-ref "origin/${{ github.event.pull_request.base.ref }}"

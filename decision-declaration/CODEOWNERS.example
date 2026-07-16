@@ -1,0 +1,30 @@
+# PROPOSAL — copy into a fork's .github/CODEOWNERS (or repo root / docs/) to demo.
+# Not written into ../diffusers/ automatically.
+#
+# Purpose: the Decision Declaration Linkage check (decision-linkage.yml) only verifies
+# a declaration EXISTS and cites something real -- it never judges whether the citation
+# is the right one or the understanding is correct. That's still a human's job. This
+# file routes each domain's declarations to someone with actual authority to judge them
+# -- in the real customer scenario, whoever maintains the corresponding .ai/<file>.md.
+#
+# Combined with branch protection's "Require review from Code Owners", this is a second
+# server-enforced (Tier 1) mechanism, purely additive -- a text file plus a checkbox,
+# no new machinery to build or own.
+#
+# Two tradeoffs to say out loud, not hide:
+#   1. Concentrating required approval on a small owner set can itself become a
+#      bottleneck -- reviewer workload/participation are stronger drivers of review
+#      timeliness than most other factors in the literature (Kononenko/McIntosh). This
+#      trades "no gate" for "a gate that can queue on one person." Widen the owner
+#      groups (teams, not individuals) if this becomes the new bottleneck.
+#   2. On a solo fork there is no second human to demo a genuine catch with this file --
+#      the live demo shows the CODEOWNERS wiring itself, not a real second-reviewer
+#      moment. Say this rather than imply the demo proves more than it does.
+
+# Domain                              Owner (placeholder — real maintainers of the
+#                                      corresponding .ai/<file>.md in the actual repo)
+src/diffusers/models/                 @models-domain-owners
+src/diffusers/pipelines/              @pipelines-domain-owners
+src/diffusers/schedulers/             @pipelines-domain-owners
+src/diffusers/guiders/                @pipelines-domain-owners
+src/diffusers/modular_pipelines/      @modular-domain-owners

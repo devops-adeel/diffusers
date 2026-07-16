@@ -1,0 +1,18 @@
+# Decision Declaration Linkage — CODEOWNERS
+#
+# Auto-requests review on PRs touching these domains. Deliberately NOT paired with
+# branch protection's "Require review from Code Owners" here: this is a solo fork
+# (devops-adeel), and GitHub's self-approval rule (a PR author can never approve their
+# own PR) has no override -- enabling that requirement with a single owner would
+# permanently deadlock any PR devops-adeel opens. This file demonstrates the routing
+# mechanism only; see REPORT.md and CODEOWNERS.example for the real multi-maintainer
+# design and its tradeoffs (reviewer-concentration risk, and this solo-fork limitation).
+#
+# In the real customer scenario, each domain maps to whoever maintains the
+# corresponding .ai/<file>.md, not to one account.
+
+src/diffusers/models/                 @devops-adeel
+src/diffusers/pipelines/              @devops-adeel
+src/diffusers/schedulers/             @devops-adeel
+src/diffusers/guiders/                @devops-adeel
+src/diffusers/modular_pipelines/      @devops-adeel
