@@ -994,6 +994,9 @@ class StableDiffusionPAGPipeline(
         # 7. Denoising loop
         num_warmup_steps = len(timesteps) - num_inference_steps * self.scheduler.order
         if self.do_perturbed_attention_guidance:
+            # Snapshot the registered processor before swapping it for the PAG denoising
+            # loop -- self.unet is shared/reused across pipeline calls, so it must be
+            # restored (see below) rather than left mutated. Per .ai/pipelines.md.
             original_attn_proc = self.unet.attn_processors
             self._set_pag_attn_processor(
                 pag_applied_layers=self.pag_applied_layers,
@@ -1074,6 +1077,8 @@ class StableDiffusionPAGPipeline(
         self.maybe_free_model_hooks()
 
         if self.do_perturbed_attention_guidance:
+            # Restore the original processor so this call leaves self.unet exactly as
+            # it found it, per the shared-component-state rule in .ai/pipelines.md.
             self.unet.set_attn_processor(original_attn_proc)
 
         if not return_dict:
