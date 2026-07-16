@@ -125,8 +125,15 @@ dmypy.json
 .vs
 .vscode
 
-# Cursor
-.cursor
+# Cursor (personal editor state ignored, but project-level hooks are team-shared
+# config and meant to be committed -- see .cursor/hooks.json). Note: the exclusion
+# pattern must be `.cursor/*`, not bare `.cursor` -- git never descends into a
+# directory excluded as a unit, so negating individual files inside it would
+# silently do nothing.
+.cursor/*
+!/.cursor/hooks.json
+!/.cursor/hooks/
+!/.cursor/hooks/*
 
 # Pycharm
 .idea
@@ -186,3 +193,6 @@ wandb
 # AI agent generated symlinks
 /.agents/skills
 /.claude/skills
+
+# Decision Declaration scratch draft (Cursor beforeSubmitPrompt gate) -- never ship
+decision-declaration/.draft.md

@@ -35,15 +35,16 @@ touched, also read `.ai/models.md`, `.ai/pipelines.md`, or `.ai/modular.md`.
 
 ## 3. Finalize the Decision Declaration
 
-If a draft exists from `model-integration`'s scaffold-time step, check it against the
-**real** diff you're about to submit, not the plan you started with — plans drift
-during implementation, and a stale draft is worse than an honest gap. If none exists
-(this wasn't a model-integration task, or you skipped it), write one now. Either way,
-by the end of this step every reference-guide domain your diff touches under
-`src/diffusers/` needs a row: a real citation in your own words, or a stated reason
-none of that guide's decisions apply. This becomes part of what you share in step 4 —
-see the [template](../../../decision-declaration/TEMPLATE.md) for the exact format a CI
-check parses.
+If a draft exists from `model-integration`'s scaffold-time step (check
+`decision-declaration/.draft.md`, gitignored — it's never part of the diff), check it
+against the **real** diff you're about to submit, not the plan you started with —
+plans drift during implementation, and a stale draft is worse than an honest gap. If
+none exists (this wasn't a model-integration task, or you skipped it), write one now.
+Either way, by the end of this step every reference-guide domain your diff touches
+under `src/diffusers/` needs a row: a real citation in your own words, or a stated
+reason none of that guide's decisions apply. This becomes part of what you share in
+step 4 — see the [template](../../../decision-declaration/TEMPLATE.md) for the exact
+format a CI check parses.
 
 ## 4. Report
 
