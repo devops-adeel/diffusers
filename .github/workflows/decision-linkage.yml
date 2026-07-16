@@ -27,12 +27,14 @@ name: Decision Declaration Linkage
 on:
   pull_request:
     types: [opened, synchronize, reopened, edited]
-    paths:
-      - 'src/diffusers/models/**'
-      - 'src/diffusers/pipelines/**'
-      - 'src/diffusers/modular_pipelines/**'
-      - 'src/diffusers/schedulers/**'
-      - 'src/diffusers/guiders/**'
+    # Deliberately no `paths:` filter here. A required check whose workflow never
+    # runs because the trigger's paths filter excluded every changed file gets stuck
+    # in "Expected -- Waiting for status to be reported" permanently, blocking merge
+    # forever (documented GitHub behavior, reproduced live against this exact
+    # workflow/ruleset pairing). The path scoping instead happens inside the script
+    # itself (see DOMAIN_PATH_PREFIXES in check_decision_linkage.py), which already
+    # handles zero touched domains by passing trivially -- so this workflow always
+    # runs and always resolves one way or the other, never leaves the check pending.
 
 permissions:
   contents: read
