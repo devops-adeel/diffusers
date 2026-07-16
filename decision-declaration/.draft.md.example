@@ -1,0 +1,23 @@
+<!--
+DECISION DECLARATION DRAFT — this is your working scratch copy, checked by the
+Cursor beforeSubmitPrompt hook (decision-declaration-gate) before you can keep
+working. It is NOT the final declaration you paste into the PR -- that happens at
+self-review time, against the real diff, possibly with rows revised or added.
+
+This file is gitignored on purpose (see the .gitignore entry for
+decision-declaration/.draft.md) -- it should never end up in the shipped diff.
+
+The bar here is deliberately lighter than the final PR-time check: any non-empty
+row per touched domain passes, even a tentative or wrong guess. You're not
+expected to have found the exact right citation yet -- you're expected to have
+started forming an opinion before you're deep in implementation. self-review's
+"Finalize the Decision Declaration" step is where this gets checked against the
+real diff and tightened into a real citation (or a stated N/A) using the same
+table format as decision-declaration/TEMPLATE.md.
+-->
+
+<!-- decision-declaration:start -->
+| Domain | Decision I'm relying on (tentative is fine) |
+|---|---|
+| pipelines | N/A — placeholder, replace with a real guess or citation before continuing |
+<!-- decision-declaration:end -->

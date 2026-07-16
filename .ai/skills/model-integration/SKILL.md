@@ -32,6 +32,11 @@ about before you're deep in implementation, rather than reconstructing it after 
 fact when you open the PR. The `self-review` skill finalizes it against the real diff
 at the end.
 
+Write the draft into `decision-declaration/.draft.md` (gitignored — never part of the
+diff). If you're working in Cursor, a `beforeSubmitPrompt` hook checks this file and
+stops you from continuing once a touched domain has no row in it — writing the draft
+here isn't just good practice, it's what unblocks you.
+
 Then work through the **Integration checklist** below
 
 ## Integration checklist
