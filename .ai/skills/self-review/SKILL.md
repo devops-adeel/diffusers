@@ -33,7 +33,19 @@ files, scope to your own commits: `git log main..HEAD --oneline`, then
 it and review against it; don't rely on a remembered copy. For the areas you
 touched, also read `.ai/models.md`, `.ai/pipelines.md`, or `.ai/modular.md`.
 
-## 3. Report
+## 3. Finalize the Decision Declaration
+
+If a draft exists from `model-integration`'s scaffold-time step, check it against the
+**real** diff you're about to submit, not the plan you started with — plans drift
+during implementation, and a stale draft is worse than an honest gap. If none exists
+(this wasn't a model-integration task, or you skipped it), write one now. Either way,
+by the end of this step every reference-guide domain your diff touches under
+`src/diffusers/` needs a row: a real citation in your own words, or a stated reason
+none of that guide's decisions apply. This becomes part of what you share in step 4 —
+see the [template](../../../decision-declaration/TEMPLATE.md) for the exact format a CI
+check parses.
+
+## 4. Report
 
 - **Blocking issues** — numbered. Each: title → explanation → `file.py:line` →
   impact. Cite the rule, e.g. *Per `.ai/models.md`: "…only keep the inference path."*
@@ -48,12 +60,12 @@ touched, also read `.ai/models.md`, `.ai/pipelines.md`, or `.ai/modular.md`.
 Report only — do not edit files. Be concrete, cite the rule, review the whole
 diff, and don't invent issues or flag pure style.
 
-## 4. Iterate until ready, then share
+## 5. Iterate until ready, then share
 
 Expect several rounds: the contributor addresses findings, you review again.
 Keep working with them to fix as much as possible until the verdict is
 **READY** — the **Leave for the actual review** items are the only ones that
 should reach the reviewer unresolved. End the final round's report by
-reminding the contributor to share it on the PR (description or a comment) —
-it saves the reviewer a few rounds of back-and-forth. Never commit the notes as
-part of the diff.
+reminding the contributor to share it, and the finalized Decision Declaration, on
+the PR (description or a comment) — it saves the reviewer a few rounds of
+back-and-forth. Never commit the notes as part of the diff.

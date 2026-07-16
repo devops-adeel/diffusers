@@ -22,6 +22,16 @@ Ask step 3 as an `AskUserQuestion`, with modular marked as the recommended defau
 
 Once you have everything, **confirm the plan** with the user before implementing — state exactly what you'll do, e.g. "I'll integrate model X with pipeline Y based on your script, and verify the model matches the reference before considering it done."
 
+**Draft a Decision Declaration** ([template](../../../decision-declaration/TEMPLATE.md))
+before writing code: based on the plan you just confirmed, name which decisions in
+the relevant reference guides (models / pipelines / modular) are likely to bind this
+integration, in your own words. This is a draft, not a commitment — candidates you
+surface now may turn out irrelevant, and the integration will surface others you
+didn't anticipate. Its purpose is to start this as something you form an opinion
+about before you're deep in implementation, rather than reconstructing it after the
+fact when you open the PR. The `self-review` skill finalizes it against the real diff
+at the end.
+
 Then work through the **Integration checklist** below
 
 ## Integration checklist

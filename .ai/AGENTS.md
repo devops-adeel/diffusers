@@ -38,6 +38,22 @@ Task-specific guides live in `.ai/skills/` and are loaded on demand by AI agents
 - [model-integration](./skills/model-integration/SKILL.md) (adding/converting pipelines)
 - [self-review](./skills/self-review/SKILL.md) (pre-PR self-review against the project rules)
 
+## Decision Declaration
+
+The reference guides above record decisions, not just style — a change can follow
+every stated convention and still contradict a decision the guide already made,
+silently, because nothing forces that decision back into view. Before opening a PR
+that touches a directory one of the reference guides covers, fill in a
+[Decision Declaration](../decision-declaration/TEMPLATE.md): name which of that
+guide's decisions your change relies on (or state plainly that none apply), in your
+own words, and paste it into the PR description or a comment.
+
+A CI check verifies a declaration exists for every reference-guide domain your diff
+touches, and that each citation resolves against the guide's current content — it
+does not, and cannot, judge whether the citation is the right one or your
+understanding is correct. That stays a reviewer's call; the declaration just puts the
+restatement in front of them instead of leaving it undiscovered.
+
 ## Self-review before a PR
 
 Before opening a PR, run self-review against [review-rules.md](review-rules.md). The [self-review skill](skills/self-review/SKILL.md) runs this as the same pass the `@claude` CI reviewer uses. Share the final report on the PR (description or comment) — see the skill for details.
