@@ -38,3 +38,4 @@ vs. declared domains itself from the diff and the table above.
 
 **Domains touched:** pipelines · **Declared:** pipelines · **Status:** ✅
 <!-- decision-declaration:end -->
+# second throwaway line, verifying the paths-filter fix
