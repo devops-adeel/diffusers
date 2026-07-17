@@ -54,6 +54,19 @@ does not, and cannot, judge whether the citation is the right one or your
 understanding is correct. That stays a reviewer's call; the declaration just puts the
 restatement in front of them instead of leaving it undiscovered.
 
+### If a Cursor hook blocks you
+
+`decision_declaration_edit_gate.py` blocks a domain write before it lands, via
+Cursor's `preToolUse` hook. If a tool call comes back denied, don't just report
+that the edit was blocked — restate the specific next step from the denial message
+(which domain, which draft file, what a valid row looks like: a real citation from
+the matching `.ai/` guide, or `'N/A -- <reason>'`). If the person you're working
+with instead describes a generic "A beforeSubmitPrompt hook blocked this
+submission" banner with no further detail, explain that it almost certainly means a
+Decision Declaration is missing for a domain they just touched, and point them at
+`decision-declaration/TEMPLATE.md` — you won't see that block yourself (it fires
+before your turn starts), so you can only help once asked.
+
 ## Self-review before a PR
 
 Before opening a PR, run self-review against [review-rules.md](review-rules.md). The [self-review skill](skills/self-review/SKILL.md) runs this as the same pass the `@claude` CI reviewer uses. Share the final report on the PR (description or comment) — see the skill for details.

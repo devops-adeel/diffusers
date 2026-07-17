@@ -100,11 +100,18 @@ def deny(missing):
         f"Add a row to {DRAFT_FILE} for each (a real citation from the matching "
         f".ai/ guide, or 'N/A -- <reason>') before continuing."
     )
+    # Cursor's beforeSubmitPrompt schema is {"continue": bool, "user_message": str}
+    # -- no "permission" or "agent_message" field exists for this hook event (it
+    # fires before the model is invoked, so there's no agent turn to relay a
+    # message through anyway). The prior version sent "userMessage"/"agentMessage"/
+    # "permission", none of which this event reads, which is why `continue: false`
+    # correctly blocked the prompt while the custom text never rendered -- Cursor
+    # fell back to its own generic banner. Both casings kept on user_message as a
+    # hedge, matching decision_declaration_edit_gate.py's approach.
     print(json.dumps({
         "continue": False,
-        "permission": "deny",
+        "user_message": msg,
         "userMessage": msg,
-        "agentMessage": msg,
     }))
 
 
