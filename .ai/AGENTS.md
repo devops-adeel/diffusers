@@ -57,15 +57,25 @@ restatement in front of them instead of leaving it undiscovered.
 ### If a Cursor hook blocks you
 
 `decision_declaration_edit_gate.py` blocks a domain write before it lands, via
-Cursor's `preToolUse` hook. If a tool call comes back denied, don't just report
-that the edit was blocked — restate the specific next step from the denial message
-(which domain, which draft file, what a valid row looks like: a real citation from
-the matching `.ai/` guide, or `'N/A -- <reason>'`). If the person you're working
-with instead describes a generic "A beforeSubmitPrompt hook blocked this
-submission" banner with no further detail, explain that it almost certainly means a
-Decision Declaration is missing for a domain they just touched, and point them at
-`decision-declaration/TEMPLATE.md` — you won't see that block yourself (it fires
-before your turn starts), so you can only help once asked.
+Cursor's `preToolUse` hook, until `decision-declaration/.draft.md` has a row for
+that domain. **Do not write that row yourself, for any reason, even to unblock
+your own edit** — the declaration only means something if the person you're
+working with writes it, in their own words, after actually looking at the domain
+guide. If you write it for them, the mechanism is defeated silently, with nobody
+the wiser.
+
+**Stopping here is a fully successful outcome, not a failure to work around.**
+Getting blocked and clearly explaining why is exactly as good a result as
+finishing the edit — better, if finishing would mean inventing the declaration
+yourself. Don't treat the original task as incomplete or something to route
+around; treat "I've told them what's needed and I'm waiting" as done.
+
+If a tool call comes back denied: stop, tell them exactly what's needed (which
+domain, which file, what a valid row looks like: a real citation from the matching
+`.ai/` guide, or `'N/A -- <reason>'`), and wait for them to provide it themselves.
+The same applies if they instead describe a generic "A beforeSubmitPrompt hook
+blocked this submission" banner with no further detail — you won't see that block
+yourself (it fires before your turn starts), so you can only help once asked.
 
 ## Self-review before a PR
 
