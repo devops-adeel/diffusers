@@ -33,24 +33,10 @@ sys.path.insert(
     0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "decision-declaration")
 )
 from check_decision_linkage import (  # noqa: E402
-    DOMAIN_PATH_PREFIXES,
-    extract_declaration_block,
-    parse_rows,
+    DRAFT_FILE,
+    compute_touched_domains,
+    declared_domains_from_draft,
 )
-
-DRAFT_FILE = "decision-declaration/.draft.md"
-
-
-def compute_touched_domains(paths):
-    touched = set()
-    for path in paths:
-        path = path.strip()
-        if not path:
-            continue
-        for domain, prefixes in DOMAIN_PATH_PREFIXES.items():
-            if any(path.startswith(prefix) for prefix in prefixes):
-                touched.add(domain)
-    return touched
 
 
 def branch_reference(repo_dir):
@@ -101,18 +87,6 @@ def changed_paths(repo_dir):
     return paths
 
 
-def declared_domains(repo_dir):
-    try:
-        with open(os.path.join(repo_dir, DRAFT_FILE), encoding="utf-8") as f:
-            text = f.read()
-    except OSError:
-        text = ""
-    block = extract_declaration_block(text)
-    if block is None:
-        return set()
-    return {row.domain for row in parse_rows(block)}
-
-
 def allow(message=None):
     out = {"continue": True, "permission": "allow"}
     if message:
@@ -140,7 +114,7 @@ def main():
         repo_dir = (payload.get("workspace_roots") or [os.getcwd()])[0]
 
         touched = compute_touched_domains(changed_paths(repo_dir))
-        missing = touched - declared_domains(repo_dir)
+        missing = touched - declared_domains_from_draft(repo_dir)
 
         if missing:
             deny(missing)
