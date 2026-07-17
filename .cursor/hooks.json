@@ -5,6 +5,12 @@
       {
         "command": "python3 .cursor/hooks/decision_declaration_gate.py"
       }
+    ],
+    "preToolUse": [
+      {
+        "command": "python3 .cursor/hooks/decision_declaration_edit_gate.py",
+        "matcher": "Write"
+      }
     ]
   }
 }

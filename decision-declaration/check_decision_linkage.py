@@ -33,6 +33,7 @@ Exit code 0 = pass, 1 = fail. Always prints a human-readable report to stdout.
 """
 
 import argparse
+import os
 import re
 import subprocess
 import sys
@@ -146,6 +147,26 @@ def parse_rows(block_text):
                 row.cited_quote = cite_match.group(2).strip()
         rows.append(row)
     return rows
+
+
+DRAFT_FILE = "decision-declaration/.draft.md"
+
+
+def declared_domains_from_draft(repo_dir, draft_file=DRAFT_FILE):
+    """Lightweight bar shared by both Cursor-side hooks (beforeSubmitPrompt gate,
+    preToolUse edit gate): any non-empty row per domain counts, no citation-strength
+    verification -- that stays at self-review time and at CI (see evaluate() below).
+    Reads DRAFT_FILE directly from the working tree (not git show/a ref), since it's
+    gitignored scratch state that never has a committed version to pin to."""
+    try:
+        with open(os.path.join(repo_dir, draft_file), encoding="utf-8") as f:
+            text = f.read()
+    except OSError:
+        text = ""
+    block = extract_declaration_block(text)
+    if block is None:
+        return set()
+    return {row.domain for row in parse_rows(block)}
 
 
 def read_domain_file_content(domain, ai_dir, repo_dir, git_ref):
@@ -310,8 +331,6 @@ def main():
                          help="Git ref (e.g. origin/main) to pin .ai/ file content to. "
                               "Requires --repo-dir. If omitted, falls back to --ai-dir.")
     args = parser.parse_args()
-
-    import os
 
     with open(args.changed_files_file, encoding="utf-8") as f:
         changed_files = f.readlines()
