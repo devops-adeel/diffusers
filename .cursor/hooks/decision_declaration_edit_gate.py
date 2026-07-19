@@ -71,11 +71,22 @@ def deny(domain, absolute_path):
     msg = (
         f"Decision Declaration missing for: {domain}. This edit to {absolute_path} "
         f"is blocked until a row exists in {DRAFT_FILE} for it (a real citation "
-        f"from the matching .ai/ guide, or 'N/A -- <reason>')."
+        f"from the matching .ai/ guide, or 'N/A -- <reason>'). Do not write that "
+        f"row yourself -- wait for the person you're working with to add it in "
+        f"their own words."
     )
     # Both casings emitted deliberately -- the exact combination empirically proven
     # to work in the real Cursor GUI (GAPS_AND_BLOCKERS.md SS7a), not a guess at
     # which one Cursor reads.
+    #
+    # The "do not write that row yourself" clause is deliberately duplicated here,
+    # not just left in .ai/AGENTS.md -- GAPS_AND_BLOCKERS.md SS9's 3-trial batch
+    # (1/3 clean) found the deciding variable wasn't instruction wording so much as
+    # whether the agent happened to freshly re-read AGENTS.md at all before acting;
+    # this message is the one channel proven to reach the agent's context on every
+    # single trial in that batch, including the two that fabricated anyway, so the
+    # prohibition rides on the channel with proven delivery, not just the one with
+    # richer explanation.
     print(json.dumps({
         "permission": "deny",
         "userMessage": msg,
