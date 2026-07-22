@@ -21,6 +21,8 @@ class DualTransformer2DModel(nn.Module):
     """
     Dual transformer wrapper that combines two `Transformer2DModel`s for mixed inference.
 
+    Both sub-transformers are invoked directly inside `forward`.
+
     Parameters:
         num_attention_heads (`int`, *optional*, defaults to 16): The number of heads to use for multi-head attention.
         attention_head_dim (`int`, *optional*, defaults to 88): The number of channels in each head.
